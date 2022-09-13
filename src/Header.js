@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import firebase from 'firebase/compat/app';
-import 'firebase/compat/storage';
 import {auth, storage, db} from "./Firebase.js";
 import "./Header.css"
 
@@ -65,7 +64,6 @@ function Header(props){
   function uploadPost(e){
     e.preventDefault();
     let drescricaoUpload = document.getElementById("descricaoUpload").value;
-    let progressEl = document.getElementById("progressUpload");
 
     const uploadTask = storage.ref(`images/${file.name}`).put(file);
     
