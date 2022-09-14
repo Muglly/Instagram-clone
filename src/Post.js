@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import firebase from 'firebase/compat/app';
 import {db} from "./Firebase"
 import "./Post.css";
 
@@ -7,7 +8,7 @@ function Post (props){
     const [comentarios, setComentarios] = useState([]);
 
     useEffect(() => {
-        db.collection("posts").doc(props.id).collection("comentarios").onSnapshot(function(snapshot){
+        db.collection("posts").doc(props.id).collection("comentarios").orderBy("timestamp","desc").onSnapshot(function(snapshot){
             setComentarios(snapshot.docs.map(function(document){
               return {id:document.id, info:document.data()}
             }))
@@ -21,7 +22,8 @@ function Post (props){
         
         db.collection("posts").doc(id).collection("comentarios").add({
             nome: props.user,
-            comentario: comentarioAtual
+            comentario: comentarioAtual,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
         })
 
         alert("comentario feito com sucesso!");
@@ -34,6 +36,7 @@ function Post (props){
             <img src={props.info.image}/>
             <p><b>{props.info.userName}:</b> {props.info.descricao}</p>
             <div className="coments">
+                <h2>Comentários:</h2>
                 {
                     comentarios.map(function(val){
                         return(
@@ -44,10 +47,17 @@ function Post (props){
                     })
                 }
             </div>
-            <form onSubmit={(e)=>comentar(props.id,e)}>
-              <textarea id={"comentario-"+props.id}></textarea>
-              <input type="submit" value="Enviar" placeholder='Comentar...'/>
-            </form>
+
+            {
+                (props.user)?
+                <form onSubmit={(e)=>comentar(props.id,e)}>
+                <textarea id={"comentario-"+props.id}></textarea>
+                <input type="submit" value="Enviar" placeholder='Comentar...'/>
+                </form>
+                :
+                <div></div>
+            }
+
         </div>
     )
 }

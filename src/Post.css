@@ -2,6 +2,7 @@
     background-color: white;
     max-width: 700px;
     margin: 10px auto;
+    padding-bottom: 30px;
   }
   
   .postSingle img{
@@ -31,5 +32,18 @@
     cursor: pointer;
     padding: 8px 10px;
     border-radius: 3px;
+  }
+
+  .coments{
+    margin-left: 20px;
+  }
+
+  .coments h2{
+    font-size: 16px;
+    color: #4b4b4b;
+  }
+
+  .comentsSingle p{
+    font-size: 14px;
   }
   
