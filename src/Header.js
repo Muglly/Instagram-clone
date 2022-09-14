@@ -33,7 +33,8 @@ function Header(props){
     auth.signInWithEmailAndPassword(email,password)
     .then((auth)=>{
       props.setUser(auth.user.displayName);
-      alert("Logado com sucesso!")
+      alert("Logado com sucesso!");
+      window.location.href ="/";
     }).catch((error)=>{
       alert(error.message);
     })
@@ -61,6 +62,14 @@ function Header(props){
     modal.style.display ="none";
   }
 
+  function deslogar(e){
+    e.preventDefault();
+    auth.signOut().then(function(val){
+      props.setUser(null);
+      window.location.href ="/";
+    })
+  }
+
   function uploadPost(e){
     e.preventDefault();
     let drescricaoUpload = document.getElementById("descricaoUpload").value;
@@ -86,6 +95,7 @@ function Header(props){
         setFile(null);
         alert("Upload realizado com sucessso!");
         document.getElementById("form-upload").reset();
+        fecharModalUpload();
 
       })
     })
@@ -131,6 +141,7 @@ function Header(props){
         <div className='headerLogadoInfo'>
           <span>Olá, <b>{props.user}</b></span>
           <a onClick={(e)=>abrirModalUpload(e)} href=''>Postar</a>
+          <a onClick={(e)=>deslogar(e)}>Sair</a>
         </div>
         :
         <div className='headerLoginForm'>
